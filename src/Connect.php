@@ -7,7 +7,7 @@ use PDO;
 
 class Connect {
 
-  private PDO $pdo;
+  private static PDO $pdo;
   
   public function __construct(
     string $hostname,
@@ -21,7 +21,7 @@ class Connect {
   ) {
     $dsn = "{$database}:host={$hostname};port={$port};dbname={$dbname};charset={$charset}";
     try {
-      $this->pdo = new PDO($dsn, $username, $password, $option);
+      self::$pdo = new PDO($dsn, $username, $password, $option);
     } catch(Exception $e) {
       print($e);
     }
@@ -30,11 +30,12 @@ class Connect {
   public static function selectAll(
     string $table,
   ): array {
-    $stmt = self::$pdo->prepare("SELECT :column FROM :table");
-    $stmt->bindParam(":column", "*");
-    $stmt->bindParam(":table", $table);
-    $stmt->execute();
+    $column = "*";
     
+    $stmt = self::$pdo->prepare("SELECT * FROM {$table}");
+
+    $stmt->execute();
+
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }
   
@@ -42,12 +43,11 @@ class Connect {
     string $column,
     string $table,
     ): array {
-      $stmt = self::$pdo->prepare("SELECT :column FROM :table");
-      $stmt->bindParam(":column", $column);
-      $stmt->bindParam(":table", $table);
-      $stmt->execute();
+    
+    $stmt = self::$pdo->prepare("SELECT {$column} FROM {$table}");
+    $stmt->execute();
 
-      return $stmt->fetch(PDO::FETCH_ASSOC);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
   }
 
   public static function update(
