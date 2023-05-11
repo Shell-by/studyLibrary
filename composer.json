@@ -1,0 +1,11 @@
+{
+    "name": "shellby/db",
+    "description": "This is a library for easy use of databases.",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Shellby\\Db\\": "src/"
+        }
+    },
+    "require": {}
+}
