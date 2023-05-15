@@ -25,41 +25,10 @@ class Connect {
     } catch(Exception $e) {
       print($e);
     }
-  } 
+  }
 
-  public static function selectAll(
-    string $table,
-  ): array {
-    $column = "*";
-    
-    $stmt = self::$pdo->prepare("SELECT * FROM {$table}");
-
-    $stmt->execute();
-
-    return $stmt->fetch(PDO::FETCH_ASSOC);
+  public static function getPdo() :PDO {
+    return self::$pdo;
   }
   
-  public static function select(
-    string $column,
-    string $table,
-    ): array {
-    
-    $stmt = self::$pdo->prepare("SELECT {$column} FROM {$table}");
-    $stmt->execute();
-
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-  }
-
-  public static function update(
-    string $column,
-    string $table,
-    string $where = "1"
-  ):int {
-    $stmt = self::$pdo->prepare("UPDATE :table SET :column WHERE :where");
-    $stmt->bindParam(":table", $table);
-    $stmt->bindParam(":column", $column);
-    $stmt->bindParam(":where", $where);
-    return 0;
-  }
-
 }
